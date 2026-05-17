@@ -68,16 +68,24 @@ public class BookController {
 
     @GetMapping("/book/{id}")
     public String viewBook(@PathVariable String id, Model model) {
-        // Decode the ID to create a URI
         String bookUri = "http://example.org/book/" + id;
         Book book = rdfService.getBookByUri(bookUri);
-        
+
         if (book == null) {
             model.addAttribute("error", "Book not found");
             return "error";
         }
-        
+
         model.addAttribute("book", book);
+
+        // Find similar books (share at least one theme, excluding the current book)
+        List<Book> similarBooks = rdfService.getAllBooks().stream()
+                .filter(b -> !b.getUri().equals(bookUri))
+                .filter(b -> b.getThemes().stream()
+                        .anyMatch(t -> book.getThemes().contains(t)))
+                .collect(java.util.stream.Collectors.toList());
+        model.addAttribute("similarBooks", similarBooks);
+
         return "book-detail";
     }
 

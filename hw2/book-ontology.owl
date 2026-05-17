@@ -49,8 +49,15 @@
 
   <owl:ObjectProperty rdf:about="http://example.org/book/hasReadingLevel">
     <rdfs:label>has reading level</rdfs:label>
-    <rdfs:comment>Indicates the reading level of a book</rdfs:comment>
-    <rdfs:domain rdf:resource="http://example.org/book/Book"/>
+    <rdfs:comment>Indicates the reading level of a book or user</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="http://example.org/book/Book"/>
+          <owl:Class rdf:about="http://example.org/book/User"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
     <rdfs:range rdf:resource="http://example.org/book/ReadingLevel"/>
   </owl:ObjectProperty>
 
@@ -59,13 +66,6 @@
     <rdfs:comment>Indicates that a user prefers a particular theme</rdfs:comment>
     <rdfs:domain rdf:resource="http://example.org/book/User"/>
     <rdfs:range rdf:resource="http://example.org/book/Theme"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="http://example.org/book/userReadingLevel">
-    <rdfs:label>user reading level</rdfs:label>
-    <rdfs:comment>Indicates the reading level of a user</rdfs:comment>
-    <rdfs:domain rdf:resource="http://example.org/book/User"/>
-    <rdfs:range rdf:resource="http://example.org/book/ReadingLevel"/>
   </owl:ObjectProperty>
 
   <owl:ObjectProperty rdf:about="http://example.org/book/isRecommendedFor">
@@ -90,21 +90,41 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
 
-  <!-- Instances -->
-  <owl:Class rdf:about="http://example.org/book/Beginner">
-    <rdfs:subClassOf rdf:resource="http://example.org/book/ReadingLevel"/>
-  </owl:Class>
+  <!-- Reading Level Individuals -->
+  <owl:NamedIndividual rdf:about="http://example.org/book/Beginner">
+    <rdf:type rdf:resource="http://example.org/book/ReadingLevel"/>
+    <rdfs:label>Beginner</rdfs:label>
+  </owl:NamedIndividual>
 
-  <owl:Class rdf:about="http://example.org/book/Intermediate">
-    <rdfs:subClassOf rdf:resource="http://example.org/book/ReadingLevel"/>
-  </owl:Class>
+  <owl:NamedIndividual rdf:about="http://example.org/book/Intermediate">
+    <rdf:type rdf:resource="http://example.org/book/ReadingLevel"/>
+    <rdfs:label>Intermediate</rdfs:label>
+  </owl:NamedIndividual>
 
-  <owl:Class rdf:about="http://example.org/book/Advanced">
-    <rdfs:subClassOf rdf:resource="http://example.org/book/ReadingLevel"/>
-  </owl:Class>
+  <owl:NamedIndividual rdf:about="http://example.org/book/Advanced">
+    <rdf:type rdf:resource="http://example.org/book/ReadingLevel"/>
+    <rdfs:label>Advanced</rdfs:label>
+  </owl:NamedIndividual>
 
-  <!-- Rules as SWRL Rules (if needed) -->
-  <!-- A book is recommended for a user if the book's themes match the user's preferred themes 
-       AND the book's reading level is less than or equal to the user's reading level -->
+  <!-- Theme Individuals -->
+  <owl:NamedIndividual rdf:about="http://example.org/book/ScienceFiction">
+    <rdf:type rdf:resource="http://example.org/book/Theme"/>
+    <rdfs:label>Science Fiction</rdfs:label>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/book/Fantasy">
+    <rdf:type rdf:resource="http://example.org/book/Theme"/>
+    <rdfs:label>Fantasy</rdfs:label>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/book/Mystery">
+    <rdf:type rdf:resource="http://example.org/book/Theme"/>
+    <rdfs:label>Mystery</rdfs:label>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/book/Murder">
+    <rdf:type rdf:resource="http://example.org/book/Theme"/>
+    <rdfs:label>Murder</rdfs:label>
+  </owl:NamedIndividual>
 
 </rdf:RDF>

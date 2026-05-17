@@ -21,7 +21,7 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <jena.version>4.8.0</jena.version>
         <jung.version>2.1.1</jung.version>
     </properties>
@@ -79,17 +79,17 @@
             <artifactId>gson</artifactId>
         </dependency>
 
-        <!-- Vector Database and LLM support -->
+        <!-- JSON processing for LLM API -->
         <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j</artifactId>
-            <version>0.31.0</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
+        <!-- Load .env file -->
         <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-embeddings</artifactId>
-            <version>0.31.0</version>
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
         <!-- HTTP Client for API calls -->

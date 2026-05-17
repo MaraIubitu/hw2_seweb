@@ -26,7 +26,7 @@
 
     <div class="container mt-5">
         <h1>Manage Books</h1>
-        
+
         <ul class="nav nav-tabs mb-4" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add-panel" type="button" role="tab">Add Book</button>
@@ -89,9 +89,13 @@
                                     </p>
                                 </div>
                                 <div class="col-md-4 text-end">
-                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" 
+                                    <button class="btn btn-sm btn-warning" type="button"
                                             th:data-book-id="${book.uri.substring(book.uri.lastIndexOf('/') + 1)}"
-                                            onclick="editBook(this)">Edit</button>
+                                            th:data-book-title="${book.title}"
+                                            th:data-book-author="${book.author}"
+                                            th:data-book-themes="${#strings.listJoin(book.themes, ',')}"
+                                            th:data-book-level="${book.readingLevel}"
+                                            onclick="openEditModal(this)">Edit</button>
                                     <form th:action="@{/book/{id}/delete(id=${book.uri.substring(book.uri.lastIndexOf('/') + 1)})}" method="post" style="display: inline;">
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this book?')">Delete</button>
                                     </form>
@@ -107,15 +111,66 @@
         </div>
     </div>
 
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editForm" method="post">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="editTitle" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAuthor" class="form-label">Author</label>
+                            <input type="text" class="form-control" id="editAuthor" name="author" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editThemes" class="form-label">Themes (comma-separated)</label>
+                            <input type="text" class="form-control" id="editThemes" name="themes" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editReadingLevel" class="form-label">Reading Level</label>
+                            <select class="form-control" id="editReadingLevel" name="readingLevel" required>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <input type="hidden" id="page-context" value="manage" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function editBook(button) {
+        function openEditModal(button) {
             const bookId = button.getAttribute('data-book-id');
-            // Redirect to edit page or show modal
-            alert('Edit functionality would be implemented here for: ' + bookId);
+            const title = button.getAttribute('data-book-title');
+            const author = button.getAttribute('data-book-author');
+            const themes = button.getAttribute('data-book-themes');
+            const level = button.getAttribute('data-book-level');
+
+            document.getElementById('editTitle').value = title;
+            document.getElementById('editAuthor').value = author;
+            document.getElementById('editThemes').value = themes;
+            document.getElementById('editReadingLevel').value = level;
+            document.getElementById('editForm').action = '/book/' + bookId + '/update';
+
+            var modal = new bootstrap.Modal(document.getElementById('editModal'));
+            modal.show();
         }
     </script>
-    <div th:replace="fragments/chatbot :: chatbot"></div>
+    <div th:replace="~{fragments/chatbot :: chatbot}"></div>
 </body>
 </html>
