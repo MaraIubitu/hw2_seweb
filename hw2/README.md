@@ -2,6 +2,11 @@
 
 A comprehensive semantic web application demonstrating RDF, OWL, SPARQL technologies with a web interface and AI chatbot integration.
 
+## Team Members
+Iubitu Mara-Alexandra, 1241EA
+Bilciurescu Gabriel-Cosmin, 1241EA
+Rachiteanu Emma, 1241EA
+
 ## Project Overview
 
 This project is a complete implementation of a book recommendation system using semantic web technologies. It includes:
