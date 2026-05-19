@@ -3,9 +3,9 @@
 A comprehensive semantic web application demonstrating RDF, OWL, SPARQL technologies with a web interface and AI chatbot integration.
 
 ## Team Members
-Iubitu Mara-Alexandra, 1241EA
-Bilciurescu Gabriel-Cosmin, 1241EA
-Rachiteanu Emma, 1241EA
+Iubitu Mara-Alexandra, 1241EA  
+Bilciurescu Gabriel-Cosmin, 1241EA  
+Rachiteanu Emma, 1241EA  
 
 ## Project Overview
 
@@ -93,18 +93,19 @@ project/
 
 ### 3. OWL Ontology (book-ontology.owl)
 - Comprehensive ontology for book recommendation domain
-- Classes: User, Book, Theme, ReadingLevel, Recommendation
-- Object Properties: hasTheme, hasReadingLevel, prefers, isRecommendedFor
-- Data Properties: author, title
-- RDFS labels and comments for documentation
+- Classes: Reader, Book, Author, Genre, Review, Recommendation
+- Object Properties: hasAuthor, writtenBy, hasGenre, hasReview, reviewedBook, reviewedBy, likesGenre, recommendBook, recommendTo
+- Data Properties: title, publicationYear, authorName, genreName, readerName, reviewText, rating
+The ontology includes sample individuals such as books, authors, genres, reviews, and recommendations. It was visualized in GraphDB, and screenshots of the ontology graph are included in the project archive.
 
 ### 4. SPARQL Queries (sparql_owl.txt)
 Five SPARQL queries demonstrating different capabilities:
-1. Find books by specific author
-2. Find books with specific theme
-3. Find recommended books for a user
-4. Find books with multiple themes
-5. Get all users and their preferred themes
+1. List all books and their titles
+2. Find all books with their authors
+3. Display all books with their genres
+4. Get all books with their reviews
+5. List all books published after 1900
+The queries were executed in GraphDB, and screenshots of the results are included in the project archive.
 
 ### 5. AI Chatbot with RAG (Task 7)
 
