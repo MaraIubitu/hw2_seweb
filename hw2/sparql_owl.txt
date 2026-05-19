@@ -1,77 +1,53 @@
 # SPARQL Queries for Book Recommendation System Ontology
-# These queries are executed in Protégé or GraphDB
+# These queries are executed GraphDB, screenshots can be found in the repo
 
-# Query 1: Find all books by a specific author
-# Returns all books written by Frank Herbert
-SELECT ?bookTitle ?bookAuthor ?bookTheme ?bookLevel
+# Query 1: List all books and their titles
+PREFIX br: <http://example.org/book-recommendation#>
+
+SELECT ?book ?title
 WHERE {
-  ?book rdf:type <http://example.org/book/Book> .
-  ?book <http://www.w3.org/2000/01/rdf-schema#label> ?bookTitle .
-  ?book <http://example.org/book/author> ?bookAuthor .
-  ?book <http://example.org/book/hasTheme> ?themeUri .
-  ?themeUri <http://www.w3.org/2000/01/rdf-schema#label> ?bookTheme .
-  ?book <http://example.org/book/hasReadingLevel> ?levelUri .
-  ?levelUri <http://www.w3.org/2000/01/rdf-schema#label> ?bookLevel .
-  FILTER (?bookAuthor = "Frank Herbert")
-}
-ORDER BY ?bookTitle
-
-# Query 2: Find all books with a specific theme
-# Returns all Science Fiction books
-SELECT ?bookTitle ?bookAuthor ?bookLevel
-WHERE {
-  ?book rdf:type <http://example.org/book/Book> .
-  ?book <http://www.w3.org/2000/01/rdf-schema#label> ?bookTitle .
-  ?book <http://example.org/book/author> ?bookAuthor .
-  ?book <http://example.org/book/hasTheme> ?themeUri .
-  ?themeUri <http://www.w3.org/2000/01/rdf-schema#label> ?themeName .
-  ?book <http://example.org/book/hasReadingLevel> ?levelUri .
-  ?levelUri <http://www.w3.org/2000/01/rdf-schema#label> ?bookLevel .
-  FILTER (?themeName = "Science Fiction")
-}
-ORDER BY ?bookLevel
-
-# Query 3: Find recommended books for a specific user
-# Returns books recommended for Bob (Mystery theme, Beginner level)
-SELECT ?bookTitle ?bookAuthor ?bookLevel
-WHERE {
-  ?user rdf:type <http://example.org/book/User> .
-  ?user <http://www.w3.org/2000/01/rdf-schema#label> "Bob" .
-  ?user <http://example.org/book/prefers> ?userThemeUri .
-  ?user <http://example.org/book/hasReadingLevel> ?userLevelUri .
-  ?userLevelUri <http://www.w3.org/2000/01/rdf-schema#label> ?userLevel .
-
-  ?book rdf:type <http://example.org/book/Book> .
-  ?book <http://www.w3.org/2000/01/rdf-schema#label> ?bookTitle .
-  ?book <http://example.org/book/author> ?bookAuthor .
-  ?book <http://example.org/book/hasTheme> ?userThemeUri .
-  ?book <http://example.org/book/hasReadingLevel> ?bookLevelUri .
-  ?bookLevelUri <http://www.w3.org/2000/01/rdf-schema#label> ?bookLevel .
-
-  FILTER (?bookLevel = ?userLevel)
+  ?book a br:Book .
+  ?book br:title ?title .
 }
 
-# Query 4: Find all books with multiple themes
-# Returns books that have more than one theme
-SELECT ?bookTitle (COUNT(?theme) as ?themeCount)
-WHERE {
-  ?book rdf:type <http://example.org/book/Book> .
-  ?book <http://www.w3.org/2000/01/rdf-schema#label> ?bookTitle .
-  ?book <http://example.org/book/hasTheme> ?theme .
-}
-GROUP BY ?bookTitle
-HAVING (COUNT(?theme) > 1)
-ORDER BY DESC(?themeCount)
+# Query 2: List all books with their authors
+PREFIX br: <http://example.org/book-recommendation#>
 
-# Query 5: Get all users and their preferred themes
-# Returns all users and the themes they prefer
-SELECT ?userName ?themeName ?readingLevel
+SELECT ?book ?title ?author
 WHERE {
-  ?user rdf:type <http://example.org/book/User> .
-  ?user <http://www.w3.org/2000/01/rdf-schema#label> ?userName .
-  ?user <http://example.org/book/prefers> ?themeUri .
-  ?themeUri <http://www.w3.org/2000/01/rdf-schema#label> ?themeName .
-  ?user <http://example.org/book/hasReadingLevel> ?levelUri .
-  ?levelUri <http://www.w3.org/2000/01/rdf-schema#label> ?readingLevel .
+  ?book a br:Book .
+  ?book br:title ?title .
+  ?book br:hasAuthor ?author .
 }
-ORDER BY ?userName
+
+# Query 3: List all books with their genres
+PREFIX br: <http://example.org/book-recommendation#>
+
+SELECT ?book ?title ?genre
+WHERE {
+  ?book a br:Book .
+  ?book br:title ?title .
+  ?book br:hasGenre ?genre .
+}
+
+# Query 4: List all books with their reviews
+PREFIX br: <http://example.org/book-recommendation#>
+
+SELECT ?book ?title ?review
+WHERE {
+  ?book a br:Book .
+  ?book br:title ?title .
+  ?book br:hasReview ?review .
+}
+
+# Query 5: List all books published after 1900
+PREFIX br: <http://example.org/book-recommendation#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?book ?title ?year
+WHERE {
+  ?book a br:Book .
+  ?book br:title ?title .
+  ?book br:publicationYear ?year .
+  FILTER(xsd:decimal(?year) > 1900)
+}
